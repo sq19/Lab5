@@ -2,8 +2,17 @@
 
 const img = new Image(); // used to load image from <input> and draw to canvas
 var form = document.getElementById('generate-meme');
+var submit = form.querySelectorAll('button')[0];
 var canvas = document.getElementById('user-image');
 var context = canvas.getContext('2d');
+var buttonGroup = document.getElementById('button-group').querySelectorAll('button'); 
+var clear = buttonGroup[0];
+var read = buttonGroup[1];
+var voiceSelection = document.getElementById('voice-selection');
+var synth = window.speechSynthesis;
+var voices = [];
+var volumeGroup = document.getElementById('volume-group');
+var slider = volumeGroup.querySelectorAll('input');
 
 let fileInput = document.getElementById('image-input');
 fileInput.addEventListener('change', function(ev) {
@@ -93,5 +102,53 @@ form.addEventListener('submit', (e) => {
   context.strokeText(bottomText, canvas.width/2, canvas.height-canvas.height/10);
   context.fillText(topText, canvas.width/2, canvas.height/10);
   context.fillText(bottomText, canvas.width/2, canvas.height-canvas.height/10);
+  clear.disabled = false;
+  read.disabled = false;
+  voiceSelection.disabled = false;
+  submit.disabled = true;
+  populateVoiceList();
   e.preventDefault();
 });
+
+// clear form
+clear.addEventListener('click', () => {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  form.reset();
+  clear.disabled = true;
+  read.disabled = true;
+  submit.disabled = false;
+});
+
+read.addEventListener('click', () => {
+  const topText = document.getElementById('text-top').value;
+  const bottomText = document.getElementById('text-bottom').value;
+  let utterTop = new SpeechSynthesisUtterance(topText);
+  let utterBottom = new SpeechSynthesisUtterance(bottomText);
+  let selectedOption = voiceSelection.selectedOptions[0].getAttribute('data-name');
+  for(let i = 0; i < voices.length ; i++) {
+    if(voices[i].name === selectedOption) {
+      utterTop.voice = voices[i];
+      utterBottom.voice = voices[i];
+    }
+  }
+  synth.speak(utterTop);
+  synth.speak(utterBottom);
+})
+
+function populateVoiceList() {
+  voices = synth.getVoices();
+
+  for(let i = 0; i < voices.length ; i++) {
+    let option = document.createElement('option');
+    option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
+
+    if(voices[i].default) {
+      option.textContent += ' -- DEFAULT';
+    }
+
+    option.setAttribute('data-lang', voices[i].lang);
+    option.setAttribute('data-name', voices[i].name);
+    voiceSelection.appendChild(option);
+  }
+}
+
