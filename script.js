@@ -1,5 +1,7 @@
 // script.js
 
+
+const img = new Image(); // used to load image from <input> and draw to canvas
 let fileInput = document.getElementById('image-input');
 fileInput.addEventListener('change', function(ev) {
    if(ev.target.files) {
@@ -7,13 +9,10 @@ fileInput.addEventListener('change', function(ev) {
       var reader  = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = function (e) {
-          var img = new Image();
           img.src = e.target.result;
       }
    }
 });
-
-//const img = new Image(); // used to load image from <input> and draw to canvas
 
 // Fires whenever the img object loads a new image (such as with img.src =)
 img.addEventListener('load', () => {
@@ -22,13 +21,14 @@ img.addEventListener('load', () => {
   var canvas = document.getElementById('user-image');
   var context = canvas.getContext('2d');
   context.clearRect(0, 0, canvas.width, canvas.height);
-  context.fill();
+  context.fillStyle = "black";
+  context.fillRect(0, 0, canvas.width, canvas.height);
 
-  // var form = document.getElementById('generate-meme');
-  // form.reset();
+  var form = document.getElementById('generate-meme');
+  form.reset();
 
-  // var dimensions = getDimmensions(canvas.width, canvas.height, img.width, img.height);
-  // context.drawImage(img, dimensions.startX, dimensions.startY, dimensions.width, dimensions.height);
+  var dimensions = getDimmensions(canvas.width, canvas.height, img.width, img.height);
+  context.drawImage(img, dimensions.startX, dimensions.startY, dimensions.width, dimensions.height);
 
   // Some helpful tips:
   // - Fill the whole Canvas with black first to add borders on non-square images, then draw on top
