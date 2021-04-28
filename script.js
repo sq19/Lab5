@@ -12,7 +12,8 @@ var voiceSelection = document.getElementById('voice-selection');
 var synth = window.speechSynthesis;
 var voices = [];
 var volumeGroup = document.getElementById('volume-group');
-var slider = volumeGroup.querySelectorAll('input');
+var slider = volumeGroup.querySelectorAll('input')[0];
+var volumeIcon = volumeGroup.querySelectorAll('img')[0];
 
 let fileInput = document.getElementById('image-input');
 fileInput.addEventListener('change', function(ev) {
@@ -131,6 +132,8 @@ read.addEventListener('click', () => {
       utterBottom.voice = voices[i];
     }
   }
+  utterTop.volume = slider.value/100;
+  utterBottom.volume = slider.value/100;
   synth.speak(utterTop);
   synth.speak(utterBottom);
 })
@@ -152,3 +155,21 @@ function populateVoiceList() {
   }
 }
 
+volumeGroup.addEventListener('input', () => {
+  if(slider.value >= 67 && slider.value <= 100) {
+    volumeIcon.src = "icons/volume-level-3.svg";
+    volumeIcon.alt = "Volume Level 3";
+  }
+  if(slider.value >= 34 && slider.value <= 66) {
+    volumeIcon.src = "icons/volume-level-2.svg";
+    volumeIcon.alt = "Volume Level 2";
+  }
+  if(slider.value >= 1 && slider.value <= 33) {
+    volumeIcon.src = "icons/volume-level-1.svg";
+    volumeIcon.alt = "Volume Level 1";
+  }
+  if(slider.value == 0) {
+    volumeIcon.src = "icons/volume-level-0.svg";
+    volumeIcon.alt = "Volume Level 0";
+  }
+});
