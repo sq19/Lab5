@@ -19,15 +19,15 @@ fileInput.addEventListener('change', function(ev) {
 img.addEventListener('load', () => {
   // TODO
   console.log("here");
-  const canvas = document.getElementById('user-image');
-  const context = canvas.getContext('2d');
+  var canvas = document.getElementById('user-image');
+  var context = canvas.getContext('2d');
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.fill();
 
-  const form = document.getElementById('generate-meme');
+  var form = document.getElementById('generate-meme');
   form.reset();
 
-  const dimensions = getDimmensions(canvas.width, canvas.height, img.width, img.height);
+  var dimensions = getDimmensions(canvas.width, canvas.height, img.width, img.height);
   context.drawImage(img, dimensions.startX, dimensions.startY, dimensions.width, dimensions.height);
 
   // Some helpful tips:
