@@ -1,6 +1,19 @@
 // script.js
 
-const img = new Image(); // used to load image from <input> and draw to canvas
+let fileInput = document.getElementById('image-input');
+fileInput.addEventListener('change', function(ev) {
+   if(ev.target.files) {
+      let file = ev.target.files[0];
+      var reader  = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = function (e) {
+          var img = new Image();
+          img.src = e.target.result;
+      }
+   }
+});
+
+//const img = new Image(); // used to load image from <input> and draw to canvas
 
 // Fires whenever the img object loads a new image (such as with img.src =)
 img.addEventListener('load', () => {
