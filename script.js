@@ -5,6 +5,17 @@ const img = new Image(); // used to load image from <input> and draw to canvas
 // Fires whenever the img object loads a new image (such as with img.src =)
 img.addEventListener('load', () => {
   // TODO
+  console.log("here");
+  const canvas = document.getElementById('user-image');
+  const context = canvas.getContext('2d');
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.fill();
+
+  const form = document.getElementById('generate-meme');
+  form.reset();
+
+  const dimensions = getDimmensions(canvas.width, canvas.height, img.width, img.height);
+  context.drawImage(img, dimensions.startX, dimensions.startY, dimensions.width, dimensions.height);
 
   // Some helpful tips:
   // - Fill the whole Canvas with black first to add borders on non-square images, then draw on top
