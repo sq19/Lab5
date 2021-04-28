@@ -24,11 +24,11 @@ img.addEventListener('load', () => {
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.fill();
 
-  var form = document.getElementById('generate-meme');
-  form.reset();
+  // var form = document.getElementById('generate-meme');
+  // form.reset();
 
-  var dimensions = getDimmensions(canvas.width, canvas.height, img.width, img.height);
-  context.drawImage(img, dimensions.startX, dimensions.startY, dimensions.width, dimensions.height);
+  // var dimensions = getDimmensions(canvas.width, canvas.height, img.width, img.height);
+  // context.drawImage(img, dimensions.startX, dimensions.startY, dimensions.width, dimensions.height);
 
   // Some helpful tips:
   // - Fill the whole Canvas with black first to add borders on non-square images, then draw on top
