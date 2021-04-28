@@ -1,13 +1,16 @@
 // script.js
 
 const img = new Image(); // used to load image from <input> and draw to canvas
+var form = document.getElementById('generate-meme');
+var canvas = document.getElementById('user-image');
+var context = canvas.getContext('2d');
 
 let fileInput = document.getElementById('image-input');
 fileInput.addEventListener('change', function(ev) {
    if(ev.target.files) {
       let file = ev.target.files[0];
       //console.log(file);
-      var reader  = new FileReader();
+      let reader  = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = function (e) {
           img.src = e.target.result;
@@ -21,16 +24,13 @@ fileInput.addEventListener('change', function(ev) {
 // Fires whenever the img object loads a new image (such as with img.src =)
 img.addEventListener('load', () => {
   // TODO
-  var canvas = document.getElementById('user-image');
-  var context = canvas.getContext('2d');
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.fillStyle = "black";
   context.fillRect(0, 0, canvas.width, canvas.height);
 
-  var form = document.getElementById('generate-meme');
   form.reset();
 
-  var dimensions = getDimmensions(canvas.width, canvas.height, img.width, img.height);
+  const dimensions = getDimmensions(canvas.width, canvas.height, img.width, img.height);
   context.drawImage(img, dimensions.startX, dimensions.startY, dimensions.width, dimensions.height);
 
   // Some helpful tips:
@@ -78,3 +78,20 @@ function getDimmensions(canvasWidth, canvasHeight, imageWidth, imageHeight) {
 
   return { 'width': width, 'height': height, 'startX': startX, 'startY': startY }
 }
+
+// generate meme on submit
+form.addEventListener('submit', (e) => {
+  console.log("here");
+  const topText = document.getElementById('text-top').value;
+  const bottomText = document.getElementById('text-bottom').value;
+  context.textAlign = "center";
+  context.font = "30px Arial";
+  context.strokeStyle = 'black';
+  context.lineWidth = 5;
+  context.fillStyle = 'white';
+  context.strokeText(topText, canvas.width/2, canvas.height/10);
+  context.strokeText(bottomText, canvas.width/2, canvas.height-canvas.height/10);
+  context.fillText(topText, canvas.width/2, canvas.height/10);
+  context.fillText(bottomText, canvas.width/2, canvas.height-canvas.height/10);
+  e.preventDefault();
+});
